@@ -8,6 +8,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { GamesService } from './games.service';
+import { CreateGameDto } from './create-games.dto';
 
 @Controller('games')
 export class GamesController {
@@ -24,7 +25,7 @@ export class GamesController {
   }
 
   @Post()
-  create(@Body() body: any) {
+  create(@Body() body: CreateGameDto) {
     return this.gamesService.create(body);
   }
 
