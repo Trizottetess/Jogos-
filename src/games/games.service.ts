@@ -37,4 +37,20 @@ export class GamesService {
 
     return newGame;
   }
+
+  remove(id: number) {
+    const posicao = this.games.findIndex((game) => game.id === id);
+
+    this.games.splice(posicao, 1);
+  }
+
+  update(id: number, newData: Partial<Game>) {
+    const game = this.findOne(id);
+
+    if (!game) return null;
+
+    Object.assign(game, newData);
+
+    return game;
+  }
 }
