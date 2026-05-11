@@ -24,16 +24,13 @@ export class GamesService {
     return this.games;
   }
 
-  findOne(id: number): Game | undefined {
-    const game = this.games.find((Game) => Game.id === Number(id));
+  findOne(id: number): Game {
+    const game = this.games.find((game) => game.id === id);
 
-    if (!game) {
-      throw new NotFoundException(`Jogo com id ${id} não encontrado`);
-    }
+    if (!game) throw new NotFoundException(`Jogo com id ${id} não encontrado`);
 
     return game;
   }
-
   create(gameData: Omit<Game, 'id'>): Game {
     const newGame: Game = {
       id: this.games.length + 1,
