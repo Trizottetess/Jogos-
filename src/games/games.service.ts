@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Game } from './game.entity';
+// import { NotFoundException } from './@nest'
 
 @Injectable()
 export class GamesService {
@@ -24,7 +25,13 @@ export class GamesService {
   }
 
   findOne(id: number): Game | undefined {
-    return this.games.find((Game) => Game.id === Number(id));
+    const game = this.games.find((Game) => Game.id === Number(id));
+
+    if (!game) {
+      throw new NotFoundException(`Jogo com id ${id} não encontrado`);
+    }
+
+    return game;
   }
 
   create(gameData: Omit<Game, 'id'>): Game {
