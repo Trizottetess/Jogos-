@@ -6,13 +6,21 @@ import {
   Post,
   Delete,
   Put,
+  Inject,
 } from '@nestjs/common';
 import { GamesService } from './games.service';
 import { CreateGameDto } from './create-games.dto';
+import { IGetGameByIdUseCase } from './application/GetGameById/GetGameById.useCase';
 
 @Controller('games')
 export class GamesController {
-  constructor(private readonly gamesService: GamesService) {}
+  constructor(
+    private readonly gamesService: GamesService,
+    @Inject(IGetGameByIdUseCase)
+    private readonly getGameByIdUseCase: {
+      execute: (input: any) => Promise<any>;
+    },
+  ) {}
 
   @Get()
   findAll() {
@@ -21,7 +29,7 @@ export class GamesController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.gamesService.findOne(Number(id));
+    return this.getGameByIdUseCase.execute({ id: Number(id) });
   }
 
   @Post()
