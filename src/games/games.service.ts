@@ -46,6 +46,8 @@ export class GamesService {
     const posicao = this.games.findIndex((game) => game.id === id);
 
     this.games.splice(posicao, 1);
+
+    return 'Jogo removido com sucesso!';
   }
 
   update(id: number, newData: Partial<Game>) {

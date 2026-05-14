@@ -3,8 +3,12 @@ import { GamesController } from './games.controller';
 import { GamesService } from './games.service';
 import { GetGameIdUseCase } from './application/GetGameById/GetGameById';
 import { IGetGameByIdUseCase } from './application/GetGameById/GetGameById.useCase';
-import { CreateGameUseCase } from './application/CreateGame/CreateGame';
+import { CreateGamesUseCase } from './application/CreateGame/CreateGame';
 import { ICreateGameUseCase } from './application/CreateGame/CreateGame.useCase';
+import { DeleteGameUseCase } from './application/DeleteGame/DeleteGame';
+import { IDeleteGameUseCase } from './application/DeleteGame/DeleteGame.useCase';
+import { UpdateGameUseCase } from './application/UpdateGame/UpdateGame';
+import { IUpdateGameUseCase } from './application/UpdateGame/UpdateGame.useCase';
 
 @Module({
   controllers: [GamesController],
@@ -15,8 +19,16 @@ import { ICreateGameUseCase } from './application/CreateGame/CreateGame.useCase'
       provide: IGetGameByIdUseCase,
     },
     {
-      useClass: CreateGameUseCase,
-      provide: IGetCreateGameUseCase,
+      useClass: CreateGamesUseCase,
+      provide: ICreateGameUseCase,
+    },
+    {
+      useClass: DeleteGameUseCase,
+      provide: IDeleteGameUseCase,
+    },
+    {
+      useClass: UpdateGameUseCase,
+      provide: IUpdateGameUseCase,
     },
   ],
 })
