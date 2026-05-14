@@ -1,4 +1,6 @@
 import { Module } from '@nestjs/common';
+import { Game } from './game.entity';
+import { SequelizeModule } from '@nestjs/sequelize';
 import { GamesController } from './games.controller';
 import { GamesService } from './games.service';
 import { GetGameIdUseCase } from './application/GetGameById/GetGameById';
@@ -11,25 +13,14 @@ import { UpdateGameUseCase } from './application/UpdateGame/UpdateGame';
 import { IUpdateGameUseCase } from './application/UpdateGame/UpdateGame.useCase';
 
 @Module({
+  imports: [SequelizeModule.forFeature([Game])],
   controllers: [GamesController],
   providers: [
     GamesService,
-    {
-      useClass: GetGameIdUseCase,
-      provide: IGetGameByIdUseCase,
-    },
-    {
-      useClass: CreateGamesUseCase,
-      provide: ICreateGameUseCase,
-    },
-    {
-      useClass: DeleteGameUseCase,
-      provide: IDeleteGameUseCase,
-    },
-    {
-      useClass: UpdateGameUseCase,
-      provide: IUpdateGameUseCase,
-    },
+    { useClass: GetGameIdUseCase, provide: IGetGameByIdUseCase },
+    { useClass: CreateGamesUseCase, provide: ICreateGameUseCase },
+    { useClass: DeleteGameUseCase, provide: IDeleteGameUseCase },
+    { useClass: UpdateGameUseCase, provide: IUpdateGameUseCase },
   ],
 })
 export class GamesModule {}
