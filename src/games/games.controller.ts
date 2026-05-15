@@ -31,7 +31,7 @@ export class GamesController {
     },
     @Inject(IDeleteGameUseCase)
     private readonly deleteGameUseCase: {
-      execute: (input: number) => Promise<any>;
+      execute: (input: { id: number }) => Promise<any>;
     },
 
     @Inject(IUpdateGameUseCase)
@@ -57,7 +57,7 @@ export class GamesController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.deleteGameUseCase.execute(Number(id));
+    return this.deleteGameUseCase.execute({ id: Number(id) });
   }
 
   @Put(':id')
