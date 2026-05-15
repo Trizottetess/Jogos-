@@ -9,7 +9,7 @@ import {
   Inject,
 } from '@nestjs/common';
 import { GamesService } from './games.service';
-import { CreateGameDto } from './create-games.dto';
+import { CreateGameDto } from './application/CreateGame/CreateGame.dto';
 import { IGetGameByIdUseCase } from './application/GetGameById/GetGameById.useCase';
 import { ICreateGameUseCase } from './application/CreateGame/CreateGame.useCase';
 import { IDeleteGameUseCase } from './application/DeleteGame/DeleteGame.useCase';
@@ -52,7 +52,7 @@ export class GamesController {
 
   @Post()
   create(@Body() body: CreateGameDto) {
-    return this.gamesService.create(body);
+    return this.createGameUseCase.execute(body);
   }
 
   @Delete(':id')
