@@ -4,6 +4,8 @@ import { AppService } from './app.service';
 import { GamesModule } from './games/games.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -23,6 +25,8 @@ import { SequelizeModule } from '@nestjs/sequelize';
       inject: [ConfigService],
     }),
     GamesModule,
+    UsersModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

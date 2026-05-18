@@ -11,10 +11,12 @@ import {
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { GamesService } from './games.service';
 import { CreateGameDto } from './application/CreateGame/CreateGame.dto';
+import type { IgetGameByIdUseCase } from './application/GetGameById/GetGameById.useCase';
 import { IGetGameByIdUseCase } from './application/GetGameById/GetGameById.useCase';
 import { ICreateGameUseCase } from './application/CreateGame/CreateGame.useCase';
 import { IDeleteGameUseCase } from './application/DeleteGame/DeleteGame.useCase';
 import { IUpdateGameUseCase } from './application/UpdateGame/UpdateGame.useCase';
+import type { IupdateGameUseCase } from './application/UpdateGame/UpdateGame.useCase';
 
 @ApiTags('Games') //-> agrupando todas as rotas do controller sob o titulo Games no Swagger
 @Controller('games')
@@ -23,23 +25,16 @@ export class GamesController {
     private readonly gamesService: GamesService,
 
     @Inject(IGetGameByIdUseCase)
-    private readonly getGameByIdUseCase: {
-      execute: (input: any) => Promise<any>;
-    },
+    private readonly getGameByIdUseCase: IgetGameByIdUseCase,
 
     @Inject(ICreateGameUseCase)
-    private readonly createGameUseCase: {
-      execute: (input: any) => Promise<any>;
-    },
+    private readonly createGameUseCase: ICreateGameUseCase,
+
     @Inject(IDeleteGameUseCase)
-    private readonly deleteGameUseCase: {
-      execute: (input: { id: number }) => Promise<any>;
-    },
+    private readonly deleteGameUseCase: IDeleteGameUseCase,
 
     @Inject(IUpdateGameUseCase)
-    private readonly updateGameUseCase: {
-      execute: (input: any) => Promise<any>;
-    },
+    private readonly updateGameUseCase: IupdateGameUseCase,
   ) {}
 
   @ApiOperation({ summary: 'Retorna todos os jogos' })
