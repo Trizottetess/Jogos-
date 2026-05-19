@@ -1,60 +1,40 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
 import { Game } from './game.entity';
-// import { NotFoundException } from './@nest'
 
 @Injectable()
 export class GamesService {
-  private games: Game[] = [
-    { id: 1, title: 'The Last Of Us', genre: 'Aventura', releaseYear: 2013 },
-    {
-      id: 2,
-      title: 'Resident Evil Requiem',
-      genre: 'Terror',
-      releaseYear: 2026,
-    },
-    {
-      id: 3,
-      title: 'Call Of Duty Advanced Warfare',
-      genre: 'Aventura',
-      releaseYear: 2015,
-    },
-  ];
+  constructor(
+    @InjectModel(Game)
+    private gameModel: typeof Game,
+  ) {}
 
-  findAll(): Game[] {
-    return this.games;
+  findAll(): Promise<Game[]> {
+    return this.gameModel.findAll();
   }
 
-  findOne(id: number): Game {
-    const game = this.games.find((game) => game.id === id);
-
+  async findOne(id: number): Promise<Game> {
+    const game = await this.gameModel.findByPk(id);
     if (!game) throw new NotFoundException(`Jogo com id ${id} não encontrado`);
-
     return game;
   }
-  create(gameData: Omit<Game, 'id'>): Game {
-    const newGame: Game = {
-      id: this.games.length + 1,
-      ...gameData,
-    };
 
-    this.games.push(newGame);
-
-    return newGame;
+  create(gameData: {
+    title: string;
+    genre: string;
+    releaseYear: number;
+  }): Promise<Game> {
+    return this.gameModel.create(gameData);
   }
 
-  remove(id: number) {
-    const posicao = this.games.findIndex((game) => game.id === id);
-
-    this.games.splice(posicao, 1);
+  async update(id: number, newData: Partial<Game>): Promise<Game> {
+    const game = await this.findOne(id);
+    return game.update(newData);
   }
 
-  update(id: number, newData: Partial<Game>) {
-    const game = this.findOne(id);
-
-    if (!game) return null;
-
-    Object.assign(game, newData);
-
-    return game;
+  async remove(id: number): Promise<string> {
+    const game = await this.findOne(id);
+    await game.destroy();
+    return 'Jogo removido com sucesso!';
   }
 }

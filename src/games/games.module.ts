@@ -1,23 +1,26 @@
 import { Module } from '@nestjs/common';
+import { Game } from './game.entity';
+import { SequelizeModule } from '@nestjs/sequelize';
 import { GamesController } from './games.controller';
 import { GamesService } from './games.service';
 import { GetGameIdUseCase } from './application/GetGameById/GetGameById';
 import { IGetGameByIdUseCase } from './application/GetGameById/GetGameById.useCase';
-import { CreateGameUseCase } from './application/CreateGame/CreateGame';
+import { CreateGamesUseCase } from './application/CreateGame/CreateGame';
 import { ICreateGameUseCase } from './application/CreateGame/CreateGame.useCase';
+import { DeleteGameUseCase } from './application/DeleteGame/DeleteGame';
+import { IDeleteGameUseCase } from './application/DeleteGame/DeleteGame.useCase';
+import { UpdateGameUseCase } from './application/UpdateGame/UpdateGame';
+import { IUpdateGameUseCase } from './application/UpdateGame/UpdateGame.useCase';
 
 @Module({
+  imports: [SequelizeModule.forFeature([Game])],
   controllers: [GamesController],
   providers: [
     GamesService,
-    {
-      useClass: GetGameIdUseCase,
-      provide: IGetGameByIdUseCase,
-    },
-    {
-      useClass: CreateGameUseCase,
-      provide: IGetCreateGameUseCase,
-    },
+    { useClass: GetGameIdUseCase, provide: IGetGameByIdUseCase },
+    { useClass: CreateGamesUseCase, provide: ICreateGameUseCase },
+    { useClass: DeleteGameUseCase, provide: IDeleteGameUseCase },
+    { useClass: UpdateGameUseCase, provide: IUpdateGameUseCase },
   ],
 })
 export class GamesModule {}
